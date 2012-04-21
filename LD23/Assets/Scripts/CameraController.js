@@ -18,5 +18,9 @@ function LateUpdate() {
 
 
 function GetGoalPos() {
-	return new Vector3(target.position.x, transform.position.y, target.position.z);
+	if (target) {
+		return new Vector3(target.position.x, transform.position.y, target.position.z);
+	} else {
+		return transform.position;
+	}
 }
