@@ -14,13 +14,13 @@ function Update () {
 		lifetime -= Time.deltaTime;
 		transform.Translate(velocity*Time.deltaTime, Space.World);
 	} else {
-		//Destroy(gameObject);
+		Destroy(gameObject);
 	}
 
 }
 
 function Setup(life : float) {
-	lifetime = life;
+	lifetime = 5.0f;
 	particleSystem.emissionRate = life*100.0f;
 }
 
