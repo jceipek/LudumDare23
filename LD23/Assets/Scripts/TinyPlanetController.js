@@ -36,6 +36,7 @@ var anim : PlanetAnimation;
 
 
 var thrustParticlePrefab : Transform;
+var explosionParticlePrefab : Transform;
 
 private var controller : CharacterController;
 //private var particles : ParticleSystem;
@@ -65,6 +66,7 @@ function Update () {
 		if ((move.chargeLevel + delta) > move.maxChargeLevel) {
 			// We want to explode here
 			Debug.Log("Explode!");
+			Explode();
 			delta = move.maxChargeLevel - move.chargeLevel;
 		}
 		
@@ -91,6 +93,13 @@ function Update () {
 		move.thrustDirection = transform.rotation * (-1.0f * Vector3.forward);
 	}
 
+}
+
+function Explode() {
+	var particles : Transform = Instantiate(explosionParticlePrefab, transform.position, Quaternion.identity);
+	particles.gameObject.SendMessage("SetVelocity", move.velocity);
+	
+	Destroy(gameObject);
 }
 
 function Thrust() {
