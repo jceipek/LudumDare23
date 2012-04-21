@@ -4,6 +4,8 @@ var mass : float = 1.0f;
 
 class PlanetMovement {
 	var chargeRate = 1.0;
+	var thrustPower = 1.0;
+	var maxChargeLevel = 10.0;
 	var totalFuel : float = 100.0f;
 
 	@System.NonSerialized
@@ -41,9 +43,24 @@ function Update () {
 
 	if (move.charging) {
 		var delta : float = Time.deltaTime * move.chargeRate;
-		if (move.totalFuel - (move.chargeLevel + delta) > 0.0f) {
-			move.chargeLevel += delta;
+		
+		if ((move.totalFuel - (move.chargeLevel + delta)) < 0.0f) {
+			Debug.Log("Compensate!");
+			delta = (move.totalFuel - move.chargeLevel);
 		}
+		
+		delta = Mathf.Max(0.0f, delta);
+		
+		if ((move.chargeLevel + delta) > move.maxChargeLevel) {
+			// We want to explode here
+			Debug.Log("Explode!");
+			delta = move.maxChargeLevel - move.chargeLevel;
+		}
+		
+		delta = Mathf.Max(0.0f, delta);
+						
+		move.chargeLevel += delta;
+		
 	} else if (move.chargeLevel > 0.0f) {
 		Thrust();
 	}
@@ -62,7 +79,7 @@ function Update () {
 
 function Thrust() {
 	move.totalFuel -= move.chargeLevel;
-	move.velocity += move.thrustDirection * move.chargeLevel;
+	move.velocity += move.thrustDirection * move.chargeLevel * move.thrustPower;
 
 	var particles : Transform = Instantiate(thrustParticlePrefab, transform.position, transform.rotation);
 	particles.gameObject.SendMessage("Setup", move.chargeLevel);
