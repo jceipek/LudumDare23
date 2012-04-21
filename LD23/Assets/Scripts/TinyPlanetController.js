@@ -25,8 +25,15 @@ class PlanetMovement {
 	var rotationSpeed : float = 10.0f;
 
 }
-
 var move : PlanetMovement;
+
+class PlanetAnimation {
+	var minShakeSpeed : float = 5.0f;
+	var maxShakeSpeed : float = 10.0f;
+}
+var anim : PlanetAnimation;
+
+
 
 var thrustParticlePrefab : Transform;
 
@@ -39,9 +46,13 @@ function Start () {
 }
 
 function Update () {
+	var shake = animation["Shake"];
+
 	move.charging = Input.GetButton("Charge");
 
 	if (move.charging) {
+		animation.CrossFade("Shake");
+	
 		var delta : float = Time.deltaTime * move.chargeRate;
 		
 		if ((move.totalFuel - (move.chargeLevel + delta)) < 0.0f) {
@@ -61,8 +72,13 @@ function Update () {
 						
 		move.chargeLevel += delta;
 		
-	} else if (move.chargeLevel > 0.0f) {
-		Thrust();
+		shake.speed = Mathf.Lerp(anim.minShakeSpeed, anim.maxShakeSpeed, move.chargeLevel/move.maxChargeLevel);
+		
+	} else {
+		animation.Stop();
+		if (move.chargeLevel > 0.0f) {
+			Thrust();
+		}
 	}
 	
 	controller.Move(move.velocity * Time.deltaTime);
