@@ -1,6 +1,6 @@
 #pragma strict
 
-var firstLevel : String;
+var sceneToLoad : String;
 
 function Update () {
 	if (Input.GetButtonDown("Charge")) {
@@ -9,5 +9,5 @@ function Update () {
 }
 
 function DoneFading() {
-	Application.LoadLevel(firstLevel);
+	Application.LoadLevel(sceneToLoad);
 }

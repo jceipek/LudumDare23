@@ -98,7 +98,7 @@ function Update () {
 function Explode() {
 	var particles : Transform = Instantiate(explosionParticlePrefab, transform.position, Quaternion.identity);
 	particles.gameObject.SendMessage("SetVelocity", move.velocity);
-	
+	Application.LoadLevel("ExplodeScene");
 	Destroy(gameObject);
 }
 
