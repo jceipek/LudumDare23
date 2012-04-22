@@ -106,9 +106,13 @@ function Thrust() {
 	move.totalFuel -= move.chargeLevel;
 	move.velocity += move.thrustDirection * move.chargeLevel * move.thrustPower;
 
-	var particles : Transform = Instantiate(thrustParticlePrefab, transform.position, transform.rotation);
-	particles.gameObject.SendMessage("Setup", move.chargeLevel);
-	particles.gameObject.SendMessage("SetVelocity", move.velocity);
+	var particlePos : Vector3 = new Vector3(transform.position.x, transform.position.y-5.0f, transform.position.z);
+	var particles : Transform = Instantiate(thrustParticlePrefab, particlePos, transform.rotation);
+	//var particles : Transform = Instantiate(thrustParticlePrefab, particlePos, Quaternion.identity);
+	//particles.RotateAround(transform.rotation, Vector3.up, ransform.rotation);
+	
+	particles.gameObject.BroadcastMessage("Setup", move.chargeLevel);
+	particles.gameObject.BroadcastMessage("SetVelocity", move.velocity);
 	move.chargeLevel = 0.0f;
 }
 
@@ -118,5 +122,6 @@ function OnControllerColliderHit (hit : ControllerColliderHit) {
 }
 
 function PullInDir(dir : Vector3) {
-	move.velocity -= dir;
+	var diffVector : Vector3 = new Vector3(dir.x, 0.0f, dir.z);
+	move.velocity -= diffVector;
 }
