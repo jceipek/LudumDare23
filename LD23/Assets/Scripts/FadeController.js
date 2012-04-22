@@ -12,6 +12,7 @@ private var started : boolean = false;
 private var screenRect : Rect;
 
 var notifyWhenDone : GameObject;
+var notifyWhenStart : GameObject;
 
 function Start () {
 	screenRect = new Rect(0, 0, Screen.width, Screen.height);
@@ -37,12 +38,19 @@ function OnGUI () {
 			if (notifyWhenDone) {
 				notifyWhenDone.SendMessage("DoneFading");
 			}
+
 			Destroy(gameObject);
 		} 
 	}
 }
 
 function Fade() {
-	startTime = Time.time;
-	started = true;
+	if (!started) {
+		startTime = Time.time;
+		started = true;
+	
+		if (notifyWhenStart) {
+			notifyWhenStart.SendMessage("StartedFading");
+		}
+	}
 }
