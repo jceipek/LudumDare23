@@ -39,7 +39,7 @@ function OnGUI () {
 				notifyWhenDone.SendMessage("DoneFading");
 			}
 
-			Destroy(gameObject);
+			//Destroy(gameObject);
 		} 
 	}
 }
