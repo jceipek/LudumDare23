@@ -17,7 +17,7 @@ function Update () {
 
 function Setup(life : float) {
 	lifetime = 5.0f;
-	particleSystem.emissionRate = life*100.0f;
+	//particleSystem.emissionRate = life*100.0f;
 }
 
 function SetVelocity(newVel : Vector3) {
